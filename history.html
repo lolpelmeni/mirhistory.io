@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Периодизация мировой истории</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#2c3e50',secondary:'#e67e22'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+html {
+scroll-behavior: smooth;
+}
+body {
+font-family: 'Roboto', sans-serif;
+background-color: #fafafa;
+}
+h1, h2, h3, h4, h5, h6 {
+font-family: 'Playfair Display', serif;
+}
+.timeline-item {
+position: relative;
+}
+.gallery-item {
+transform: translateY(0);
+transition: all 0.3s ease;
+}
+.gallery-item:hover {
+transform: translateY(-5px);
+}
+.timeline-item::before {
+content: '';
+position: absolute;
+left: 0;
+top: 8px;
+height: calc(100% - 8px);
+width: 2px;
+background-color: #1a237e;
+}
+.timeline-item:last-child::before {
+display: none;
+}
+.timeline-dot {
+position: absolute;
+left: -6px;
+top: 8px;
+width: 14px;
+height: 14px;
+border-radius: 50%;
+background-color: #ffd700;
+border: 2px solid #1a237e;
+}
+.gallery-item {
+overflow: hidden;
+transition: transform 0.3s;
+}
+.gallery-item:hover {
+transform: scale(1.03);
+}
+.period-section {
+opacity: 0;
+transform: translateY(20px);
+transition: opacity 0.8s, transform 0.8s;
+}
+.period-section.visible {
+opacity: 1;
+transform: translateY(0);
+}
+.theme-switch {
+position: relative;
+width: 60px;
+height: 30px;
+background-color: #e2e8f0;
+border-radius: 15px;
+cursor: pointer;
+}
+.theme-switch-circle {
+position: absolute;
+top: 3px;
+left: 3px;
+width: 24px;
+height: 24px;
+background-color: #ffd700;
+border-radius: 50%;
+transition: transform 0.3s;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #1a237e;
+}
+.dark-mode .theme-switch-circle {
+transform: translateX(30px);
+}
+.dark-mode {
+background-color: #1e293b;
+color: #f8fafc;
+}
+.dark-mode .bg-white {
+background-color: #334155;
+}
+.dark-mode .text-gray-800 {
+color: #f1f5f9;
+}
+.dark-mode .text-gray-700 {
+color: #e2e8f0;
+}
+.dark-mode .text-gray-600 {
+color: #cbd5e1;
+}
+.dark-mode .border-gray-200 {
+border-color: #475569;
+}
+.dark-mode .shadow-lg {
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+}
+input[type="checkbox"] {
+appearance: none;
+-webkit-appearance: none;
+width: 20px;
+height: 20px;
+border: 2px solid #1a237e;
+border-radius: 4px;
+outline: none;
+cursor: pointer;
+position: relative;
+}
+input[type="checkbox"]:checked {
+background-color: #1a237e;
+}
+input[type="checkbox"]:checked::after {
+content: '';
+position: absolute;
+top: 2px;
+left: 6px;
+width: 5px;
+height: 10px;
+border-right: 2px solid white;
+border-bottom: 2px solid white;
+transform: rotate(45deg);
+}
+.hero-timeline {
+position: relative;
+height: 4px;
+background: linear-gradient(90deg, #1a237e, #ffd700);
+width: 100%;
+margin: 40px 0;
+}
+.hero-timeline-dot {
+position: absolute;
+top: -8px;
+width: 20px;
+height: 20px;
+border-radius: 50%;
+background-color: #ffd700;
+border: 2px solid #1a237e;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 10px;
+color: #1a237e;
+font-weight: bold;
+}
+.hero-timeline-label {
+position: absolute;
+top: 20px;
+transform: translateX(-50%);
+font-size: 12px;
+font-weight: 500;
+color: #1a237e;
+text-align: center;
+width: 100px;
+}
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.8);
+z-index: 1000;
+justify-content: center;
+align-items: center;
+}
+.modal-content {
+max-width: 90%;
+max-height: 90%;
+}
+.modal-close {
+position: absolute;
+top: 20px;
+right: 20px;
+color: white;
+font-size: 30px;
+cursor: pointer;
+}
+@media (max-width: 768px) {
+.hero-timeline-label {
+font-size: 10px;
+width: 70px;
+}
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<!-- Header -->
+<header class="fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-all duration-300">
+<div class="container mx-auto px-4 py-3 flex justify-between items-center">
+<a href="#" class="text-2xl font-['Pacifico'] text-primary">История</a>
+<nav class="hidden md:flex space-x-6">
+<a href="#ancient" class="text-gray-700 hover:text-primary transition-colors duration-300">Древнейшая</a>
+<a href="#ancient-history" class="text-gray-700 hover:text-primary transition-colors duration-300">Древняя</a>
+<a href="#middle-ages" class="text-gray-700 hover:text-primary transition-colors duration-300">Средневековье</a>
+<a href="#new-history" class="text-gray-700 hover:text-primary transition-colors duration-300">Новая</a>
+<a href="#modern-history" class="text-gray-700 hover:text-primary transition-colors duration-300">Новейшая</a>
+</nav>
+<div class="flex items-center space-x-4">
+<div class="theme-switch" id="themeSwitch">
+<div class="theme-switch-circle">
+<i class="ri-sun-line"></i>
+</div>
+</div>
+<button class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700" id="menuToggle">
+<i class="ri-menu-line ri-2x"></i>
+</button>
+</div>
+</div>
+<!-- Mobile menu -->
+<div class="md:hidden hidden bg-white border-t border-gray-200 py-3" id="mobileMenu">
+<div class="container mx-auto px-4 flex flex-col space-y-3">
+<a href="#ancient" class="text-gray-700 hover:text-primary transition-colors duration-300 py-2">Древнейшая история</a>
+<a href="#ancient-history" class="text-gray-700 hover:text-primary transition-colors duration-300 py-2">Древняя история</a>
+<a href="#middle-ages" class="text-gray-700 hover:text-primary transition-colors duration-300 py-2">История средних веков</a>
+<a href="#new-history" class="text-gray-700 hover:text-primary transition-colors duration-300 py-2">Новая история</a>
+<a href="#modern-history" class="text-gray-700 hover:text-primary transition-colors duration-300 py-2">Новейшая история</a>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="pt-24 pb-16 md:pt-32 md:pb-24 relative" style="background-image: linear-gradient(to right, rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.6)), url('https://readdy.ai/api/search-image?query=ancient%20historical%20timeline%20with%20artifacts%20and%20scrolls%2C%20soft%20lighting%2C%20educational%20atmosphere%2C%20warm%20tones%2C%20subtle%20details%20of%20historical%20periods%20from%20prehistory%20to%20modern%20times%2C%20elegant%20composition%20with%20depth%20and%20dimension&width=1600&height=900&seq=hero1&orientation=landscape'); background-size: cover; background-position: center;">
+<div class="container mx-auto px-4">
+<div class="bg-white bg-opacity-95 p-8 md:p-12 rounded-lg shadow-xl max-w-3xl backdrop-blur-sm border border-gray-100">
+<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6">Периодизация мировой истории</h1>
+<p class="text-lg md:text-xl text-gray-700 mb-8">Путешествие через эпохи человеческой цивилизации: от первых шагов человечества до современного мира. Исследуйте ключевые периоды, события и достижения, сформировавшие наш мир.</p>
+<div class="relative hero-timeline">
+<div class="hero-timeline-dot" style="left: 5%;">1</div>
+<div class="hero-timeline-label" style="left: 5%;">Древнейшая история</div>
+<div class="hero-timeline-dot" style="left: 25%;">2</div>
+<div class="hero-timeline-label" style="left: 25%;">Древняя история</div>
+<div class="hero-timeline-dot" style="left: 45%;">3</div>
+<div class="hero-timeline-label" style="left: 45%;">Средневековье</div>
+<div class="hero-timeline-dot" style="left: 65%;">4</div>
+<div class="hero-timeline-label" style="left: 65%;">Новая история</div>
+<div class="hero-timeline-dot" style="left: 85%;">5</div>
+<div class="hero-timeline-label" style="left: 85%;">Новейшая история</div>
+</div>
+<a href="#ancient" class="inline-block mt-8 bg-primary text-white py-3 px-6 rounded-button hover:bg-opacity-90 transition-all duration-300 shadow-md !rounded-button whitespace-nowrap">Начать путешествие</a>
+</div>
+</div>
+</section>
+<!-- Древнейшая история -->
+<section id="ancient" class="py-16 md:py-24 period-section">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">Древнейшая история</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
+<h3 class="text-xl font-semibold text-primary mb-4 relative">Хронологические рамки</h3>
+<div class="space-y-4">
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">2,6 млн лет назад</h4>
+<p class="text-gray-600">Начало палеолита, появление первых каменных орудий</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">200 тыс. лет назад</h4>
+<p class="text-gray-600">Появление человека современного типа (Homo sapiens)</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">40-10 тыс. лет назад</h4>
+<p class="text-gray-600">Верхний палеолит, расцвет первобытного искусства</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">12-10 тыс. лет назад</h4>
+<p class="text-gray-600">Мезолит, изобретение лука и стрел</p>
+</div>
+<div class="timeline-item pl-8 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">10-6 тыс. лет назад</h4>
+<p class="text-gray-600">Неолитическая революция, переход к земледелию</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Характеристика периода</h3>
+<p class="text-gray-700 mb-4">Древнейшая история человечества охватывает огромный период от появления первых гоминид до возникновения первых цивилизаций. Этот период характеризуется постепенной эволюцией человека как биологического вида и развитием его социальной организации.</p>
+<p class="text-gray-700 mb-4">Ключевые процессы этого периода:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Антропогенез — эволюционное становление человека</li>
+<li>Расселение людей по планете (миграции)</li>
+<li>Развитие орудий труда от примитивных к сложным</li>
+<li>Формирование родоплеменного строя</li>
+<li>Неолитическая революция — переход от присваивающего хозяйства (охота, собирательство) к производящему (земледелие, скотоводство)</li>
+</ul>
+<p class="text-gray-700">Важнейшим событием стала неолитическая революция, создавшая предпосылки для формирования первых цивилизаций.</p>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Значение периода</h3>
+<p class="text-gray-700 mb-4">Древнейшая история заложила фундаментальные основы человеческой цивилизации и имела решающее значение для дальнейшего развития человечества.</p>
+<p class="text-gray-700 mb-4">Важнейшие итоги развития:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Биологическое формирование человека современного типа</li>
+<li>Овладение огнем и развитие технологий обработки камня</li>
+<li>Возникновение речи и абстрактного мышления</li>
+<li>Появление первобытного искусства и религиозных представлений</li>
+<li>Переход к оседлому образу жизни</li>
+<li>Начало социального расслоения общества</li>
+</ul>
+<p class="text-gray-700">Культурные достижения этого периода включают наскальную живопись, скульптуры малых форм, первые музыкальные инструменты и зачатки архитектуры (мегалитические сооружения).</p>
+</div>
+</div>
+<div class="mt-12">
+<h3 class="text-2xl font-semibold text-primary mb-6 text-center">Культурные достижения</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=paleolithic%20cave%20paintings%20in%20Lascaux%2C%20France%2C%20showing%20ancient%20animal%20drawings%2C%20detailed%20and%20realistic%20prehistoric%20art%2C%20archaeological%20discovery%2C%20warm%20ochre%20colors%2C%20historical%20significance&width=600&height=400&seq=ancient1&orientation=landscape" alt="Наскальная живопись" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Наскальная живопись</h4>
+<p class="text-sm text-gray-600">Пещера Ласко, Франция (15-17 тыс. лет назад)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Venus%20of%20Willendorf%20figurine%2C%20prehistoric%20female%20statuette%2C%20ancient%20fertility%20symbol%2C%20detailed%20limestone%20carving%2C%20archaeological%20artifact%2C%20museum%20quality%20lighting%2C%20paleolithic%20art&width=600&height=400&seq=ancient2&orientation=landscape" alt="Венера Виллендорфская" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Венера Виллендорфская</h4>
+<p class="text-sm text-gray-600">Австрия (25 тыс. лет назад)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Stonehenge%20megalithic%20monument%20at%20sunrise%2C%20ancient%20stone%20circle%2C%20neolithic%20engineering%20marvel%2C%20prehistoric%20astronomical%20observatory%2C%20mystical%20atmosphere%2C%20archaeological%20site%20in%20England&width=600&height=400&seq=ancient3&orientation=landscape" alt="Стоунхендж" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Стоунхендж</h4>
+<p class="text-sm text-gray-600">Англия (3000-2000 гг. до н.э.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=ancient%20neolithic%20pottery%20with%20geometric%20patterns%2C%20early%20ceramic%20technology%2C%20archaeological%20artifacts%2C%20handcrafted%20clay%20vessels%2C%20prehistoric%20craftsmanship%2C%20museum%20display%2C%20detailed%20textures&width=600&height=400&seq=ancient4&orientation=landscape" alt="Неолитическая керамика" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Неолитическая керамика</h4>
+<p class="text-sm text-gray-600">Трипольская культура (5500-2750 гг. до н.э.)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Древняя история -->
+<section id="ancient-history" class="py-16 md:py-24 bg-gray-100 period-section">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">Древняя история</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
+<h3 class="text-xl font-semibold text-primary mb-4 relative">Хронологические рамки</h3>
+<div class="space-y-4">
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">IV тыс. до н.э.</h4>
+<p class="text-gray-600">Возникновение первых цивилизаций в Месопотамии и Египте</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">III тыс. до н.э.</h4>
+<p class="text-gray-600">Расцвет Шумера, строительство пирамид в Египте</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">XVIII в. до н.э.</h4>
+<p class="text-gray-600">Законы Хаммурапи в Вавилоне</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">VIII-VI вв. до н.э.</h4>
+<p class="text-gray-600">Формирование полисов в Древней Греции</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">500-449 гг. до н.э.</h4>
+<p class="text-gray-600">Греко-персидские войны</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">336-323 гг. до н.э.</h4>
+<p class="text-gray-600">Завоевания Александра Македонского</p>
+</div>
+<div class="timeline-item pl-8 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">476 г. н.э.</h4>
+<p class="text-gray-600">Падение Западной Римской империи</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Характеристика периода</h3>
+<p class="text-gray-700 mb-4">Древняя история охватывает период от возникновения первых цивилизаций до падения Западной Римской империи. Этот период характеризуется формированием и развитием первых государств, появлением письменности, монументальной архитектуры и сложных социальных структур.</p>
+<p class="text-gray-700 mb-4">Ключевые процессы этого периода:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Формирование первых государств в долинах великих рек (Нил, Тигр, Евфрат, Инд, Хуанхэ)</li>
+<li>Развитие рабовладельческого строя</li>
+<li>Возникновение и распространение мировых религий и философских систем</li>
+<li>Формирование античной цивилизации (Греция, Рим)</li>
+<li>Создание обширных империй (Персидская, империя Александра Македонского, Римская)</li>
+</ul>
+<p class="text-gray-700">Важнейшими событиями стали: изобретение письменности, создание первых правовых кодексов, расцвет демократии в Афинах, возвышение и падение Римской империи.</p>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Значение периода</h3>
+<p class="text-gray-700 mb-4">Древняя история заложила основы современной цивилизации и имела определяющее значение для дальнейшего развития человечества.</p>
+<p class="text-gray-700 mb-4">Важнейшие итоги развития:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Создание письменности и развитие литературы</li>
+<li>Формирование основ научных знаний (математика, астрономия, медицина)</li>
+<li>Развитие архитектуры и инженерного искусства</li>
+<li>Создание классических образцов искусства</li>
+<li>Формирование основ правовых систем</li>
+<li>Возникновение философии и различных форм политического устройства</li>
+</ul>
+<p class="text-gray-700">Культурные достижения этого периода включают монументальную архитектуру (пирамиды, храмы, амфитеатры), скульптуру, литературу, театр, а также научные и философские труды, многие из которых сохраняют свое значение до наших дней.</p>
+</div>
+</div>
+<div class="mt-12">
+<h3 class="text-2xl font-semibold text-primary mb-6 text-center">Культурные достижения</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Great%20Pyramids%20of%20Giza%20at%20sunset%2C%20ancient%20Egyptian%20monumental%20architecture%2C%20wonder%20of%20the%20ancient%20world%2C%20archaeological%20site%2C%20desert%20landscape%2C%20golden%20hour%20lighting%2C%20historical%20significance&width=600&height=400&seq=ancient5&orientation=landscape" alt="Пирамиды Гизы" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Пирамиды Гизы</h4>
+<p class="text-sm text-gray-600">Египет (XXVI-XXIII вв. до н.э.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Parthenon%20temple%20on%20Acropolis%20in%20Athens%2C%20ancient%20Greek%20architecture%2C%20Doric%20columns%2C%20classical%20proportions%2C%20marble%20structure%2C%20archaeological%20site%2C%20historical%20monument%2C%20blue%20sky&width=600&height=400&seq=ancient6&orientation=landscape" alt="Парфенон" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Парфенон</h4>
+<p class="text-sm text-gray-600">Греция (447-438 гг. до н.э.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Roman%20Colosseum%20at%20dusk%2C%20ancient%20amphitheater%2C%20architectural%20marvel%2C%20imperial%20Rome%2C%20historical%20monument%2C%20archaeological%20site%2C%20dramatic%20lighting%2C%20stone%20arches&width=600&height=400&seq=ancient7&orientation=landscape" alt="Колизей" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Колизей</h4>
+<p class="text-sm text-gray-600">Рим (72-80 гг. н.э.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Terracotta%20Army%20of%20Emperor%20Qin%20Shi%20Huang%2C%20ancient%20Chinese%20archaeological%20discovery%2C%20thousands%20of%20life-sized%20clay%20soldiers%2C%20detailed%20craftsmanship%2C%20historical%20artifacts%2C%20museum%20lighting%2C%20Xian%20China&width=600&height=400&seq=ancient8&orientation=landscape" alt="Терракотовая армия" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Терракотовая армия</h4>
+<p class="text-sm text-gray-600">Китай (210 г. до н.э.)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- История средних веков -->
+<section id="middle-ages" class="py-16 md:py-24 period-section">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">История средних веков</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
+<h3 class="text-xl font-semibold text-primary mb-4 relative">Хронологические рамки</h3>
+<div class="space-y-4">
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">476 г.</h4>
+<p class="text-gray-600">Падение Западной Римской империи</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">800 г.</h4>
+<p class="text-gray-600">Коронация Карла Великого, создание империи Каролингов</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1054 г.</h4>
+<p class="text-gray-600">Великий раскол христианской церкви</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1096-1270 гг.</h4>
+<p class="text-gray-600">Крестовые походы</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1206-1368 гг.</h4>
+<p class="text-gray-600">Монгольская империя</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1347-1351 гг.</h4>
+<p class="text-gray-600">Эпидемия "Черной смерти" в Европе</p>
+</div>
+<div class="timeline-item pl-8 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1453 г.</h4>
+<p class="text-gray-600">Падение Константинополя</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Характеристика периода</h3>
+<p class="text-gray-700 mb-4">Средневековье охватывает период от падения Западной Римской империи до начала эпохи Великих географических открытий и Возрождения. Этот период характеризуется формированием феодальных отношений, доминированием христианской церкви в Европе и развитием исламской цивилизации на Ближнем Востоке.</p>
+<p class="text-gray-700 mb-4">Ключевые процессы этого периода:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Формирование и развитие феодальных отношений</li>
+<li>Христианизация Европы и распространение ислама</li>
+<li>Возникновение и развитие средневековых городов</li>
+<li>Формирование национальных государств</li>
+<li>Развитие ремесла и торговли, возникновение цеховой системы</li>
+<li>Крестовые походы и культурный обмен между Востоком и Западом</li>
+</ul>
+<p class="text-gray-700">Важнейшими событиями стали: Великое переселение народов, распространение христианства и ислама, Крестовые походы, эпидемия чумы, начало формирования централизованных государств.</p>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Значение периода</h3>
+<p class="text-gray-700 mb-4">Средневековье заложило основы современной европейской цивилизации и имело важное значение для формирования современного мира.</p>
+<p class="text-gray-700 mb-4">Важнейшие итоги развития:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Формирование основ современных европейских наций и государств</li>
+<li>Развитие городской культуры и торговли</li>
+<li>Создание университетов и системы образования</li>
+<li>Развитие технологий (водяные и ветряные мельницы, механические часы)</li>
+<li>Формирование правовых систем и парламентаризма</li>
+<li>Создание уникальных художественных стилей (романский, готический)</li>
+</ul>
+<p class="text-gray-700">Культурные достижения этого периода включают готические соборы, иллюминированные рукописи, рыцарскую литературу, а также научные и философские труды. На Востоке развивались математика, астрономия, медицина, архитектура и поэзия.</p>
+</div>
+</div>
+<div class="mt-12">
+<h3 class="text-2xl font-semibold text-primary mb-6 text-center">Культурные достижения</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Notre%20Dame%20Cathedral%20in%20Paris%2C%20Gothic%20architecture%2C%20medieval%20masterpiece%2C%20stained%20glass%20windows%2C%20flying%20buttresses%2C%20religious%20monument%2C%20dramatic%20lighting%2C%20historical%20significance&width=600&height=400&seq=medieval1&orientation=landscape" alt="Собор Парижской Богоматери" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Собор Парижской Богоматери</h4>
+<p class="text-sm text-gray-600">Франция (1163-1345 гг.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=medieval%20illuminated%20manuscript%2C%20Book%20of%20Kells%2C%20intricate%20Celtic%20patterns%2C%20gold%20leaf%20details%2C%20monastic%20craftsmanship%2C%20ancient%20biblical%20text%2C%20vibrant%20colors%2C%20historical%20artifact&width=600&height=400&seq=medieval2&orientation=landscape" alt="Келлская книга" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Келлская книга</h4>
+<p class="text-sm text-gray-600">Ирландия (800 г.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Alhambra%20Palace%20in%20Granada%2C%20Spain%2C%20Islamic%20architecture%2C%20intricate%20geometric%20patterns%2C%20Moorish%20design%2C%20courtyard%20with%20fountains%2C%20arched%20doorways%2C%20historical%20monument%2C%20beautiful%20gardens&width=600&height=400&seq=medieval3&orientation=landscape" alt="Альгамбра" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Альгамбра</h4>
+<p class="text-sm text-gray-600">Испания (XIII-XIV вв.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Bayeux%20Tapestry%2C%20medieval%20embroidered%20cloth%2C%20Norman%20Conquest%20of%20England%2C%20Battle%20of%20Hastings%2C%20historical%20narrative%2C%20detailed%20scenes%2C%20textile%20art%2C%20museum%20display&width=600&height=400&seq=medieval4&orientation=landscape" alt="Гобелен из Байё" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Гобелен из Байё</h4>
+<p class="text-sm text-gray-600">Франция (1070-е гг.)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Новая история -->
+<section id="new-history" class="py-16 md:py-24 bg-gray-100 period-section">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">Новая история</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
+<h3 class="text-xl font-semibold text-primary mb-4 relative">Хронологические рамки</h3>
+<div class="space-y-4">
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1492 г.</h4>
+<p class="text-gray-600">Открытие Америки Христофором Колумбом</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1517 г.</h4>
+<p class="text-gray-600">Начало Реформации в Европе</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1618-1648 гг.</h4>
+<p class="text-gray-600">Тридцатилетняя война</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1789-1799 гг.</h4>
+<p class="text-gray-600">Великая французская революция</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1804-1815 гг.</h4>
+<p class="text-gray-600">Наполеоновские войны</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1848 г.</h4>
+<p class="text-gray-600">"Весна народов" - революции в Европе</p>
+</div>
+<div class="timeline-item pl-8 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1914 г.</h4>
+<p class="text-gray-600">Начало Первой мировой войны</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Характеристика периода</h3>
+<p class="text-gray-700 mb-4">Новая история охватывает период от Великих географических открытий до начала Первой мировой войны. Этот период характеризуется формированием капиталистических отношений, промышленной революцией, колониальной экспансией европейских держав и буржуазными революциями.</p>
+<p class="text-gray-700 mb-4">Ключевые процессы этого периода:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Великие географические открытия и колонизация новых земель</li>
+<li>Реформация и религиозные войны</li>
+<li>Развитие капиталистических отношений</li>
+<li>Промышленная революция</li>
+<li>Буржуазные революции и формирование национальных государств</li>
+<li>Развитие науки и распространение идей Просвещения</li>
+<li>Формирование колониальных империй</li>
+</ul>
+<p class="text-gray-700">Важнейшими событиями стали: открытие Америки, Реформация, Английская революция, Великая французская революция, Наполеоновские войны, объединение Германии и Италии, промышленная революция.</p>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Значение периода</h3>
+<p class="text-gray-700 mb-4">Новая история заложила основы современного мира и имела решающее значение для формирования современной цивилизации.</p>
+<p class="text-gray-700 mb-4">Важнейшие итоги развития:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Формирование мировой экономической системы</li>
+<li>Утверждение капитализма как доминирующей экономической системы</li>
+<li>Развитие парламентаризма и правового государства</li>
+<li>Технологическая революция и индустриализация</li>
+<li>Секуляризация общественной жизни</li>
+<li>Распространение идей либерализма, национализма и социализма</li>
+<li>Формирование современной научной картины мира</li>
+</ul>
+<p class="text-gray-700">Культурные достижения этого периода включают развитие литературы, музыки, живописи, архитектуры, а также научные открытия и технические изобретения, коренным образом изменившие жизнь человечества.</p>
+</div>
+</div>
+<div class="mt-12">
+<h3 class="text-2xl font-semibold text-primary mb-6 text-center">Культурные достижения</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Sistine%20Chapel%20ceiling%20by%20Michelangelo%2C%20Renaissance%20masterpiece%2C%20Creation%20of%20Adam%2C%20Vatican%2C%20detailed%20fresco%20painting%2C%20artistic%20genius%2C%20religious%20artwork%2C%20high%20renaissance%20art&width=600&height=400&seq=modern1&orientation=landscape" alt="Сикстинская капелла" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Сикстинская капелла</h4>
+<p class="text-sm text-gray-600">Микеланджело (1508-1512 гг.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=early%20steam%20locomotive%2C%20industrial%20revolution%2C%20Stephensons%20Rocket%2C%20engineering%20marvel%2C%20historical%20transportation%20technology%2C%20mechanical%20details%2C%20museum%20display%2C%20Victorian%20era&width=600&height=400&seq=modern2&orientation=landscape" alt="Паровоз Стефенсона" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Паровоз "Ракета" Стефенсона</h4>
+<p class="text-sm text-gray-600">Англия (1829 г.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Palace%20of%20Versailles%2C%20grand%20hall%20of%20mirrors%2C%20French%20baroque%20architecture%2C%20royal%20residence%2C%20ornate%20interior%2C%20chandeliers%2C%20gilded%20details%2C%20historical%20monument&width=600&height=400&seq=modern3&orientation=landscape" alt="Версальский дворец" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Версальский дворец</h4>
+<p class="text-sm text-gray-600">Франция (XVII в.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Declaration%20of%20Independence%20document%2C%20American%20history%2C%20founding%20fathers%2C%201776%2C%20historical%20manuscript%2C%20democracy%2C%20liberty%2C%20museum%20display%2C%20detailed%20parchment&width=600&height=400&seq=modern4&orientation=landscape" alt="Декларация независимости США" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Декларация независимости США</h4>
+<p class="text-sm text-gray-600">США (1776 г.)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Новейшая история -->
+<section id="modern-history" class="py-16 md:py-24 period-section">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">Новейшая история</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
+<h3 class="text-xl font-semibold text-primary mb-4 relative">Хронологические рамки</h3>
+<div class="space-y-4">
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1914-1918 гг.</h4>
+<p class="text-gray-600">Первая мировая война</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1917 г.</h4>
+<p class="text-gray-600">Революция в России</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1929-1933 гг.</h4>
+<p class="text-gray-600">Мировой экономический кризис</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1939-1945 гг.</h4>
+<p class="text-gray-600">Вторая мировая война</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1945-1991 гг.</h4>
+<p class="text-gray-600">Холодная война</p>
+</div>
+<div class="timeline-item pl-8 pb-6 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">1991 г.</h4>
+<p class="text-gray-600">Распад СССР</p>
+</div>
+<div class="timeline-item pl-8 relative">
+<div class="timeline-dot"></div>
+<h4 class="font-medium text-gray-800">2001 г. - настоящее время</h4>
+<p class="text-gray-600">Эпоха глобализации и информационного общества</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Характеристика периода</h3>
+<p class="text-gray-700 mb-4">Новейшая история охватывает период от начала Первой мировой войны до наших дней. Этот период характеризуется глобальными военными конфликтами, противостоянием различных социально-политических систем, научно-технической революцией и процессами глобализации.</p>
+<p class="text-gray-700 mb-4">Ключевые процессы этого периода:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Мировые войны и локальные конфликты</li>
+<li>Распад колониальной системы и формирование новых независимых государств</li>
+<li>Противостояние капиталистической и социалистической систем</li>
+<li>Научно-техническая революция</li>
+<li>Формирование постиндустриального общества</li>
+<li>Глобализация экономики и культуры</li>
+<li>Информационная революция и цифровизация</li>
+</ul>
+<p class="text-gray-700">Важнейшими событиями стали: мировые войны, Великая депрессия, холодная война, распад колониальной системы, научно-технические прорывы (атомная энергия, освоение космоса, компьютеризация), распад СССР, глобализация.</p>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h3 class="text-xl font-semibold text-primary mb-4">Значение периода</h3>
+<p class="text-gray-700 mb-4">Новейшая история сформировала современный мир и продолжает определять его развитие.</p>
+<p class="text-gray-700 mb-4">Важнейшие итоги развития:</p>
+<ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+<li>Формирование системы международной безопасности (ООН)</li>
+<li>Создание оружия массового уничтожения и осознание глобальных угроз</li>
+<li>Научно-технический прогресс и революция в средствах коммуникации</li>
+<li>Формирование глобальной экономики</li>
+<li>Утверждение демократических ценностей и прав человека</li>
+<li>Развитие международного сотрудничества</li>
+<li>Формирование информационного общества</li>
+</ul>
+<p class="text-gray-700">Культурные достижения этого периода включают развитие кинематографа, телевидения, новых направлений в искусстве, архитектуре, литературе, а также революционные научные открытия и технические изобретения, радикально изменившие жизнь человечества.</p>
+</div>
+</div>
+<div class="mt-12">
+<h3 class="text-2xl font-semibold text-primary mb-6 text-center">Культурные достижения</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="gallery-item rounded-lg overflow-hidden shadow-lg cursor-pointer transform hover:scale-105 transition-all duration-300">
+<img src="https://readdy.ai/api/search-image?query=first%20moon%20landing%2C%20Apollo%2011%20mission%2C%20astronaut%20on%20lunar%20surface%20with%20American%20flag%2C%20historical%20moment%2C%20space%20exploration%2C%20NASA%20achievement%2C%20iconic%20photograph&width=600&height=400&seq=modern5&orientation=landscape" alt="Высадка на Луну" class="w-full h-64 object-cover object-top hover:opacity-90 transition-opacity duration-300">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Высадка на Луну</h4>
+<p class="text-sm text-gray-600">США (1969 г.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=early%20personal%20computer%2C%20Apple%20Macintosh%201984%2C%20technological%20revolution%2C%20vintage%20technology%2C%20beige%20computer%20with%20monitor%2C%20digital%20innovation%2C%20historical%20electronics&width=600&height=400&seq=modern6&orientation=landscape" alt="Персональный компьютер" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Персональный компьютер Apple</h4>
+<p class="text-sm text-gray-600">США (1984 г.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Berlin%20Wall%20fall%2C%20November%201989%2C%20historical%20moment%2C%20people%20celebrating%20on%20wall%2C%20German%20reunification%2C%20end%20of%20Cold%20War%2C%20iconic%20historical%20photograph&width=600&height=400&seq=modern7&orientation=landscape" alt="Падение Берлинской стены" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Падение Берлинской стены</h4>
+<p class="text-sm text-gray-600">Германия (1989 г.)</p>
+</div>
+</div>
+<div class="gallery-item rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=modern%20smartphone%20technology%2C%20latest%20mobile%20device%20with%20apps%20on%20screen%2C%20digital%20communication%2C%20touchscreen%20interface%2C%20technological%20innovation%2C%20contemporary%20lifestyle&width=600&height=400&seq=modern8&orientation=landscape" alt="Современные смартфоны" class="w-full h-64 object-cover object-top">
+<div class="p-4 bg-white">
+<h4 class="font-medium text-gray-800">Смартфоны и мобильные технологии</h4>
+<p class="text-sm text-gray-600">XXI век</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-gradient-to-r from-primary to-primary/80 text-white py-12">
+<div class="container mx-auto px-4 relative">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<h3 class="text-xl font-semibold mb-4">О проекте</h3>
+<p class="text-gray-300">Этот образовательный ресурс создан для изучения основных периодов мировой истории, их характеристик и значения для развития человеческой цивилизации.</p>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-4">Источники</h3>
+<ul class="space-y-2 text-gray-300">
+<li>Всемирная история. Энциклопедия</li>
+<li>История средних веков / Под ред. С.П. Карпова</li>
+<li>Новая история стран Европы и Америки / Под ред. И.М. Кривогуза</li>
+<li>Новейшая история зарубежных стран / Под ред. А.М. Родригеса</li>
+</ul>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-4">Контакты</h3>
+<p class="text-gray-300 mb-2">Электронная почта: history@example.com</p>
+<p class="text-gray-300 mb-4">Телефон: +7 (999) 999-99-99</p>
+<div class="flex space-x-4">
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all">
+<i class="ri-facebook-fill text-white"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all">
+<i class="ri-twitter-fill text-white"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all">
+<i class="ri-instagram-fill text-white"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all">
+<i class="ri-youtube-fill text-white"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="border-t border-white border-opacity-20 mt-8 pt-8 text-center text-gray-300">
+<p>© 2025 Периодизация мировой истории. Все права защищены.</p>
+</div>
+</div>
+</footer>
+<!-- Modal for image preview -->
+<div class="modal" id="imageModal">
+<span class="modal-close">&times;</span>
+<img class="modal-content" id="modalImage">
+</div>
+<script>
+// Mobile menu toggle
+document.addEventListener('DOMContentLoaded', function() {
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+menuToggle.addEventListener('click', function() {
+mobileMenu.classList.toggle('hidden');
+});
+});
+// Theme switcher
+document.addEventListener('DOMContentLoaded', function() {
+const themeSwitch = document.getElementById('themeSwitch');
+const body = document.body;
+const themeSwitchCircle = document.querySelector('.theme-switch-circle');
+themeSwitch.addEventListener('click', function() {
+body.classList.toggle('dark-mode');
+if (body.classList.contains('dark-mode')) {
+themeSwitchCircle.innerHTML = '<i class="ri-moon-line"></i>';
+} else {
+themeSwitchCircle.innerHTML = '<i class="ri-sun-line"></i>';
+}
+});
+});
+// Scroll animation for sections
+document.addEventListener('DOMContentLoaded', function() {
+const sections = document.querySelectorAll('.period-section');
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('visible');
+}
+});
+}, {
+threshold: 0.1
+});
+sections.forEach(section => {
+observer.observe(section);
+});
+});
+// Header scroll effect
+document.addEventListener('DOMContentLoaded', function() {
+const header = document.querySelector('header');
+window.addEventListener('scroll', function() {
+if (window.scrollY > 50) {
+header.classList.add('py-2');
+header.classList.remove('py-3');
+} else {
+header.classList.add('py-3');
+header.classList.remove('py-2');
+}
+});
+});
+// Image modal
+document.addEventListener('DOMContentLoaded', function() {
+const galleryItems = document.querySelectorAll('.gallery-item');
+const modal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImage');
+const closeBtn = document.querySelector('.modal-close');
+galleryItems.forEach(item => {
+item.addEventListener('click', function() {
+const img = this.querySelector('img');
+modal.style.display = 'flex';
+modalImg.src = img.src;
+});
+});
+closeBtn.addEventListener('click', function() {
+modal.style.display = 'none';
+});
+window.addEventListener('click', function(event) {
+if (event.target === modal) {
+modal.style.display = 'none';
+}
+});
+});
+// Smooth scrolling for anchor links
+document.addEventListener('DOMContentLoaded', function() {
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+const targetId = this.getAttribute('href');
+const targetElement = document.querySelector(targetId);
+if (targetElement) {
+const headerHeight = document.querySelector('header').offsetHeight;
+const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+window.scrollTo({
+top: targetPosition,
+behavior: 'smooth'
+});
+// Close mobile menu if open
+const mobileMenu = document.getElementById('mobileMenu');
+if (!mobileMenu.classList.contains('hidden')) {
+mobileMenu.classList.add('hidden');
+}
+}
+});
+});
+});
+</script>
+</body>
+</html>
